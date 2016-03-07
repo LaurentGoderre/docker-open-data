@@ -47,8 +47,11 @@ down-postgres:
 	docker-compose -f ${POSTGRES_COMPOSE} -p ${PROJECT_NAME} down
 # Solr Config
 build-solr: up-solr
-	docker exec -it --user=solr ${SOLR_CONTAINER} \
-		/docker-entrypoint-initsolr.d/create-core.sh
+	#docker exec -it --user=solr ${SOLR_CONTAINER} \
+	#	/docker-entrypoint-initsolr.d/create-core.sh
+	docker exec -it ${SOLR_CONTAINER} \
+		/docker-entrypoint-initsolr.d/create-core-old.sh
+	sleep 7
 
 rebuild-solr: down-solr build-solr
 
