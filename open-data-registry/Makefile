@@ -19,14 +19,6 @@ rebuild: rebuild-postgres rebuild-solr
 
 up: up-postgres up-solr
 
-init: build init-postgres set-permissions-postgress
-
-build: build-postgres build-solr
-
-rebuild: rebuild-postgres rebuild-solr
-
-up: up-postgres up-solr
-
 stop: stop-postgres stop-solr
 
 down: down-postgres down-solr
