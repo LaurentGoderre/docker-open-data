@@ -1,0 +1,9 @@
+solr:
+    image: makuk66/docker-solr:4.10.3
+    ports:
+        - "8985:8983"
+    volumes:
+        - ../../ckanext-canada/conf/solr/:/media/solr_conf
+        - ../solr-scripts:/docker-entrypoint-initsolr.d
+    environment:
+        - CKAN_SOLR_CORE=opendataportal

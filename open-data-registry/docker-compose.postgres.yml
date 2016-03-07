@@ -1,0 +1,14 @@
+postgres:
+    image: postgres
+    ports:
+        - 5435:5432
+    volumes:
+        - ../../ckan/bin/postgres_init:/docker-entrypoint-initdb.d/
+    environment:
+        - CKAN_POSTGRES_DB=open_data_registry_ckan
+        - CKAN_POSTGRES_USER=opendata_usr
+        - CKAN_POSTGRES_PWD=pass
+        - CKAN_DATASTORE_POSTGRES_DB=open_data_registry_ckan_datastore
+        - CKAN_DATASTORE_POSTGRES_WRITE_USER=opendata_usr
+        - CKAN_DATASTORE_POSTGRES_READ_USER=datastore_opendata_usr
+        - CKAN_DATASTORE_POSTGRES_READ_PWD=pass
