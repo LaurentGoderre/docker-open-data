@@ -6,12 +6,13 @@ export SOLR_CONTAINER=${PROJECT_NAME}_solr_1
 export POSTGRES_COMPOSE=docker-compose.postgres.yml
 export POSTGRES_CONTAINER=${PROJECT_NAME}_postgres_1
 
-export CONFIG = ../../${PROJECT_NAME}.ini
-export VENV_PATH = ../../.venv-${PROJECT_NAME}
+export PROJECT_ROOT=../..
+export CONFIG = ${PROJECT_ROOT}/${PROJECT_NAME}.ini
+export VENV_PATH = ${PROJECT_ROOT}/.venv-${PROJECT_NAME}
 
 default: up
 
-init: build init-postgres set-permissions-postgress
+init: build init-postgres set-permissions-postgress load-orgs
 
 build: build-postgres build-solr
 
@@ -65,3 +66,10 @@ stop-solr:
 
 down-solr:
 	docker-compose -f ${SOLR_COMPOSE} -p ${PROJECT_NAME} down
+
+# Others
+load-orgs:
+	. ${VENV_PATH}/bin/activate && \
+		ckanapi load organizations \
+			-I ${PROJECT_ROOT}/ckanext-canada/transitional_orgs.jsonl \
+			-c ${CONFIG}
