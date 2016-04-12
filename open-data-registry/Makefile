@@ -51,7 +51,9 @@ build-solr: up-solr
 	#	/docker-entrypoint-initsolr.d/create-core.sh
 	docker exec -it ${SOLR_CONTAINER} \
 		/docker-entrypoint-initsolr.d/create-core-old.sh
-	sleep 7
+	while ! docker logs ${SOLR_CONTAINER} | grep "Started"; \
+			do sleep 0.1; \
+		done
 
 rebuild-solr: down-solr build-solr
 
