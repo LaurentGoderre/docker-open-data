@@ -1,9 +1,7 @@
 #!/bin/sh
 export PROJECT_NAME=opendataportal
 
-export SOLR_COMPOSE=docker-compose.solr.yml
 export SOLR_CONTAINER=${PROJECT_NAME}_solr_1
-export POSTGRES_COMPOSE=docker-compose.postgres.yml
 export POSTGRES_CONTAINER=${PROJECT_NAME}_postgres_1
 
 export PROJECT_ROOT=../..
@@ -16,13 +14,13 @@ init: build init-postgres set-permissions-postgress load-orgs
 
 build: build-postgres build-solr
 
-rebuild: rebuild-postgres rebuild-solr
+rebuild: down up
 
-up: up-postgres up-solr
+up: docker-compose up -d
 
-stop: stop-postgres stop-solr
+stop: docker-compose stop -d
 
-down: down-postgres down-solr
+down: docker-compose down -d
 
 # Postgres config
 build-postgres: up-postgres
@@ -39,13 +37,13 @@ set-permissions-postgress:
 		docker exec -i --user=postgres ${POSTGRES_CONTAINER} psql
 
 up-postgres:
-	docker-compose -f ${POSTGRES_COMPOSE} -p ${PROJECT_NAME} up -d
+	docker-compose up -d postgres
 
 stop-postgres:
-	docker-compose -f ${POSTGRES_COMPOSE} -p ${PROJECT_NAME} stop
+	docker-compose stop postgres
 
 down-postgres:
-	docker-compose -f ${POSTGRES_COMPOSE} -p ${PROJECT_NAME} down
+	docker-compose down postgres
 # Solr Config
 build-solr: up-solr
 	#docker exec -it --user=solr ${SOLR_CONTAINER} \
@@ -59,13 +57,13 @@ build-solr: up-solr
 rebuild-solr: down-solr build-solr
 
 up-solr:
-	docker-compose -f ${SOLR_COMPOSE} -p ${PROJECT_NAME}  up -d
+	docker-compose up -d solr
 
 stop-solr:
-	docker-compose -f ${SOLR_COMPOSE} -p ${PROJECT_NAME} stop
+	docker-compose stop solr
 
 down-solr:
-	docker-compose -f ${SOLR_COMPOSE} -p ${PROJECT_NAME} down
+	docker-compose down solr
 
 # Others
 load-orgs:
