@@ -16,11 +16,14 @@ build: build-postgres build-solr
 
 rebuild: down up
 
-up: docker-compose up -d
+up:
+	docker-compose up -d
 
-stop: docker-compose stop -d
+stop:
+	docker-compose stop
 
-down: docker-compose down -d
+down:
+	docker-compose down
 
 # Postgres config
 build-postgres: up-postgres
