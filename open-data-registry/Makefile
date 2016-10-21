@@ -74,3 +74,35 @@ load-orgs:
 		ckanapi load organizations \
 			-I ${PROJECT_ROOT}/ckanext-canada/transitional_orgs.jsonl \
 			-c ${CONFIG}
+
+build-venv:
+	virtualenv --no-site-packages ${VENV_PATH}
+	. ${VENV_PATH}/bin/activate && \
+		cd ${PROJECT_ROOT}/ckan/ && \
+			pip install -r requirements.txt && \
+			pip install -r dev-requirements.txt && \
+			python setup.py develop && \
+		cd ../ckanapi/ && \
+			python setup.py develop && \
+		cd ../ckanext-canada/ && \
+			pip install -r requirements.txt && \
+			python setup.py develop && \
+		cd ../ckanext-fluent/ && \
+			python setup.py develop && \
+		cd ../ckanext-googleanalytics/ && \
+			python setup.py develop && \
+		cd ../ckanext-recombinant/ && \
+			pip install -r requirements.txt && \
+			python setup.py develop && \
+		cd ../ckanext-scheming/ && \
+			pip install -r requirements.txt && \
+			python setup.py develop && \
+		cd ../ckanext-wet-boew/ && \
+			pip install -r requirements.txt && \
+			python setup.py develop && \
+		find . -name "*.pyc" -exec rm -rf {} \;
+
+down-venv:
+	rm -R ${VENV_PATH}
+
+rebuild-venv: down-venv build-venv
